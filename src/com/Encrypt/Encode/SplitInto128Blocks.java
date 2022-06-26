@@ -27,4 +27,18 @@ public class SplitInto128Blocks {
         return returnvariable; // NEEDS TO BE FIXED
 
     }
+    
+        public static void lengthequalsmod128(String[] args) {
+        ArrayList<Byte> data = new ArrayList<Byte>();
+        data.add((byte) 12);
+        while (data.size() % 128 != 0) {
+            data.add(data.size(), (byte) 0);
+
+        }
+        System.out.println(data);
+        System.out.println(data.size());
+
+
+    }
+
 }
