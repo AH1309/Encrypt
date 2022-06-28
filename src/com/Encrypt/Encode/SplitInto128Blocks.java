@@ -1,39 +1,42 @@
 package com.Encrypt.Encode;
 
+
 import java.lang.Byte;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 
-
 public class SplitInto128Blocks {
-    public static ArrayList<ArrayList<Byte>> Split128(ArrayList<Byte> args){
+    public static ArrayList<ArrayList<Byte>> Split128(ArrayList<Byte> args) {
 
-        if (args == null){
+        if (args == null) {
             return null;
 
         }
 
+        args = length128(args);
+
         ArrayList<ArrayList<Byte>> returnlist = new ArrayList<ArrayList<Byte>>();
 
 
-        for(int i = 1; i <= (int) Math.ceil((float) args.size() / 128) ; i++){
+        for (int i = 0; i <= (int) Math.ceil((float) args.size() / 128) - 1; i++) {
 
-          //  ByteBuffer buffer = ByteBuffer.wrap(args); // Legacy method
-           // byte[] splited = new byte[128];
-          //  buffer.get(splited);
+            ArrayList<Byte> newlist= new ArrayList<Byte>(args.subList((0 + (128 * i)), (127 + (128 * i))));
 
-
-        }
-        return null;
-    }
-        public static ArrayList<Byte> length128(ArrayList<Byte> data) {
-            while (data.size() % 128 != 0) {
-                data.add(data.size(), (byte) 0);
+            returnlist.add(newlist);
             
+        }
+        return returnlist;
+
+
+    }
+    public static ArrayList<Byte> length128(ArrayList<Byte> args) {
+
+        while (args.size() % 128 != 0) {
+            args.add(args.size(), (byte) 0);
 
         }
-           return data; 
+        return args;
     }
+
 
 }
