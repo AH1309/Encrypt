@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Debug;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ArrayTools extends Tools {
     public static ArrayList<Byte> ArraytoArraylist(byte[] args)  {
@@ -67,6 +68,25 @@ public class ArrayTools extends Tools {
         }
         return args;
     }
+    public static byte[] ObjectToByte(Object[] args )
+        throws Exception{
+        byte[] ReturnArray = new byte[args.length];
+
+        for( int i = 0; i < args.length ; i++){
+            ReturnArray[i] = (byte) args[i];
+        }
+        return ReturnArray;
+    }
+    public static byte[] StringToArrayList( String args)
+            throws Exception {
+        args = args.substring(1);
+        args = args.substring(0,args.length()-1);
+        Object[] Input = Arrays.stream(args.split(", ")).map(Byte::valueOf).toArray();
+        byte[] Returnlist = ObjectToByte(Input);
+        return Returnlist;
+
+    }
+
 
 }
 

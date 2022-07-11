@@ -131,12 +131,12 @@ public class Decode {
        // System.out.println(Finished+"Finished");
         return Finished;
     }
-    public static String Decode2(String Key, ArrayList<Byte> data) throws Exception {
+    public static String Decode2(String Key, String data) throws Exception {
 
         ArrayList<Byte> bytekey = ArrayTools.ArraytoArraylist(Tools.strictStringToBytes(Key,StandardCharsets.US_ASCII));
         byte[] replacetable = Table.GenerateReplaceTable(bytekey);
-
-        ArrayList<Byte> XOR = ArrayTools.BitwiseXOR(data , bytekey);
+        ArrayList<Byte> Data = ArrayTools.ArraytoArraylist(Tools.strictStringToBytes(data,StandardCharsets.US_ASCII));
+        ArrayList<Byte> XOR = ArrayTools.BitwiseXOR(Data , bytekey);
         ArrayList<ArrayList<Byte>> hu = SplitInto128Blocks.Split128(XOR);
         int rotateamount = bytekey.get(2) + 1;
         System.out.println(rotateamount);
@@ -152,6 +152,14 @@ public class Decode {
         return new String(ArrayTools.ArraylistToarray(finished),StandardCharsets.US_ASCII);
 
 
+
+    }
+    public static String FullDecode(String Key , String Data) throws Exception {
+
+        for( int i = 0 ; i < 4 ; i++){
+            Data = Decode2(Key,Data);
+        }
+        return Data;
 
     }
 }

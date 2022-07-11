@@ -119,14 +119,14 @@ public final String LegacyMethord = """
         return returnvalue;
     }
 """;
-    public static String Encrypt2(@NotNull String key  ,  @NotNull ArrayList<Byte> Data)
+    public static String Encrypt2(@NotNull String key  ,  @NotNull String Data)
             throws Exception{
 
         ArrayList<Byte> bytekey = ArrayTools.ArraytoArraylist(Tools.strictStringToBytes(key,StandardCharsets.US_ASCII));
-
-        Data = SplitInto128Blocks.length128(Data);
+        ArrayList<Byte> data = ArrayTools.ArraytoArraylist(Tools.strictStringToBytes(Data,StandardCharsets.US_ASCII));
+        data = SplitInto128Blocks.length128(data);
         byte[] replacetable = Table.GenerateReplaceTable(bytekey);
-        ArrayList<Byte> nearlyfinished2 = Table.SubBytes(Data , replacetable);
+        ArrayList<Byte> nearlyfinished2 = Table.SubBytes(data , replacetable);
         ArrayList<ArrayList<Byte>> finished = SplitInto128Blocks.Split128(nearlyfinished2);
         int rotateamount = bytekey.get(2) + 1;
 
@@ -139,6 +139,15 @@ public final String LegacyMethord = """
 
         System.out.println(done);
         return new String(ArrayTools.ArraylistToarray(done),StandardCharsets.US_ASCII);
+    }
+
+    public static String Encrypt(String Key , String  Data) throws Exception {
+
+        for(int i = 0 ; i < 4 ; i++){
+            Data = Encrypt2(Key,Data);
+
+        }
+        return Data;
     }
 
 }

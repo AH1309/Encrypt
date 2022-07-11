@@ -8,11 +8,13 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class Main {
     private static byte[] strictStringToBytes(String s, Charset charset) throws CharacterCodingException {
@@ -24,68 +26,55 @@ public class Main {
 
     public static void main(String[] args)
             throws Exception {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Encrypt or Decrypt");
-        String Line = input.nextLine();
-        if (Objects.equals(Line, "Encrypt")) {
-            String Key = KeyGen.generate();
-            String Key2 = KeyGen.generate();
-            String Key3 = KeyGen.generate();
-            String Key4 = KeyGen.generate();
-
-
-            String[] KeyArray = new String[]{Key, Key2, Key3, Key4};
-            System.out.println("Mode String Or Bytes?");
-            String Mode = input.nextLine();
-            String Data = null;
-            ArrayList<Byte> sdata = new ArrayList<>();
-
-                System.out.println("Enter Data: ");
-                Data = input.nextLine();
-                sdata = ArrayTools.ArraytoArraylist(Tools.strictStringToBytes(Data, StandardCharsets.US_ASCII));
-
-
-            for (int i = 0; i < 4; i++) {
-                Data = Execute.Encrypt2(KeyArray[i], sdata);
-            }
-
-            System.out.println("Encrypted Message : " + Data);
-            System.out.println("Key:" + Key + Key2 + Key3 + Key4);
-            // stays legacy System.out.println(Decode.Decode2(Key3 , Execute.Encrypt2(Key3,"Hi Im Alireza From Khalo (Potato is good)!! i like biscuites biscuits biscuits hi byte      ")));
-
-            //System.out.println(Execute.Encrypt2(Key,"eeeee"));
-
-
-        } else if (Objects.equals(Line, "Decrypt")) {
-            System.out.println("Enter Private Key(ASCII CharDet): ");
-            String Key = input.nextLine();
-            if (Key.length() != 256){
-                throw new Exception("");
-
-            }
-            String Key1 = (Key.substring(0, 64));
-            String Key2 = (Key.substring(64, 128));
-            String Key3 = (Key.substring(128, 192));
-            String Key4 = Key.substring(192, 256);
-            String[] KeyArray = {Key1, Key2, Key3, Key4};
-
-
-            System.out.println("Mode String Or Bytes?");
-            String Mode = input.nextLine();
-            String Data = null ;
-            Data = input.nextLine();
-            ArrayList<Byte> sdata = ArrayTools.ArraytoArraylist(Tools.strictStringToBytes(Data, StandardCharsets.US_ASCII));
-
-
-
-
-
-                for (int i = 3; i >= 0; i--) {
-                    Data = Decode.Decode2(KeyArray[i], sdata);
-                }
-
-                System.out.println(Data);
-            }
+        String Key = KeyGen.generate();
+        String Hello = "This Is Correct !";
+        for (int i = 3; i >= 0; i--) {
+            Hello = Execute.Encrypt2(Key, Hello);
         }
+        System.out.println(Hello);
+        for (int i = 3; i >= 0; i--) {
+            Hello = Decode.Decode2(Key, Hello);
+
+        }
+        System.out.println(Hello);
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Hello Do you Want To Encrypt Or Decrypt ??");
+        String Mode  = input.nextLine();
+        System.out.println(Mode);
+
+
+        if (Objects.equals(Mode, "Encrypt")){
+            System.out.println("Enter Data");
+
+            String key = KeyGen.generate();
+            String Data = input.nextLine();
+
+            System.out.println(Execute.Encrypt(key , Data));
+            System.out.println(key);
+
+        }
+        else if (Objects.equals(Mode , "Decrypt")){
+            System.out.println("Bytes Or String?");
+            String mode = input.nextLine();
+            System.out.println("Enter Data");
+            String Data = input.nextLine();
+            System.out.println("Key");
+            String Keyy = input.nextLine();
+
+            if(Objects.equals(mode, "Bytes")){
+                byte[] data = ArrayTools.StringToArrayList(Data);
+                Data = new String(data,StandardCharsets.US_ASCII);
+
+            }
+
+            System.out.println(Decode.FullDecode(Keyy,Data));
+
+        }
+
+
     }
+}
+
+
 
